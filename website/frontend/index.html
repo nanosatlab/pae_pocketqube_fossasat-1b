@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PAE Ground Station viewer</title>
+    <link rel="shortcut icon" href="#"/>
+    <!-- CSS Files -->
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link href="assets/css/material-dashboard.css?v=2.1.0" rel="stylesheet" />
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+
+    <!--  Charts Plugin, full documentation here: https://gionkunz.github.io/chartist-js/ -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+    <script src="assets/js/plugins/bootstrap-notify.js"></script> -->
+  </head>
+  <body id="main-body" class="dark-edition">
+      <div class="card card-nav-tabs card-plain">
+      <div class="card-header card-header-info">
+          <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+          <div class="nav-tabs-navigation">
+              <div class="nav-tabs-wrapper">
+                  <ul class="nav nav-tabs" data-tabs="tabs">
+                      <li class="nav-item">
+                          <a class="nav-link active" href="#packets" data-toggle="tab">Received Packets</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="#housekeeping" data-toggle="tab">Housekeeping</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div><div class="card-body ">
+          <div class="tab-content text-center">
+              <div class="tab-pane active" id="packets">
+
+                <table id="packets" class="table">
+                  <thead class=" text-primary">
+                      <th>RSSI</th>
+                      <th>Source</th>
+                      <th>Dest.</th>
+                      <th>HK time</th>
+                      <th>Source</th>
+                      <th>Battery [V]</th>
+                      <th>Charge [A]</th>
+                      <th>Charge [V]</th>
+                      <th>Boot counter</th>
+                      <th>Conf byte</th>
+                      <th>Reset counter</th>
+                      <th>Cell A [V]</th>
+                      <th>Cell B [V]</th>
+                      <th>Cell C [V]</th>
+                      <th>Battery [ºC]</th>
+                      <th>Board [ºC]</th>
+                      <th>MCU [ºC]</th>
+                      <th>Latitude</th>
+                      <th>Longitude</th>
+                      <th>TX counter</th>
+                      <th>RX counter</th>
+                  </thead>
+                  <tbody id="table-body">
+                  </tbody>
+                </table>
+              </div>
+              <div class="tab-pane" id="housekeeping">
+                  <p> Still working ... </p>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <!--<script src="https://unpkg.com/default-passive-events"></script> -->
+    <!-- Plugin for Scrollbar documentation here: https://github.com/utatti/perfect-scrollbar -->
+    <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+
+    <!-- Material Dashboard Core initialisations of plugins and Bootstrap Material Design Library -->
+    <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
+    <script src="index.js"></script>
+  </body>
+</html>

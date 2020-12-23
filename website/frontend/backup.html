@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PAE Ground Station viewer</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+  <link href="assets/css/material-dashboard.css?v=2.1.0" rel="stylesheet" />
+  <link rel="shortcut icon" href="#"/>
+</head>
+<body>
+  <div id="app" class="columns">
+    <div id="packets-list" class="column">
+      <div id="header" class="box">
+        <div class="columns">
+            <div class="column">RSSI</div>
+            <div class="column">Source</div>
+            <div class="column">Dest.</div>
+            <div class="column">HK time</div>
+            <div class="column">HK source</div>
+            <div class="column">HK Battery V</div>
+            <div class="column">HK Charge I</div>
+            <div class="column">HK Charge V</div>
+            <div class="column">HK Boot counter</div>
+            <div class="column">HK Conf byte</div>
+            <div class="column">HK Reset counter</div>
+            <div class="column">HK Cell A V</div>
+            <div class="column">HK Cell B V</div>
+            <div class="column">HK Cell C V</div>
+            <div class="column">HK Battery Temperature</div>
+            <div class="column">HK Board Temperature</div>
+            <div class="column">HK MCU Temperature</div>
+            <div class="column">Latitude</div>
+            <div class="column">Longitude</div>
+            <div class="column">TX counter</div>
+            <div class="column">RX counter</div>
+        </div>
+      </div>
+      <rx_packets v-for="packet in packets" :packet="packet" />
+    </div>
+  </div>
+  <script src="apps-vue.js"></script>
+</body>
+</html>

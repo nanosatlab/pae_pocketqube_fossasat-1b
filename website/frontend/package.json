@@ -1,0 +1,15 @@
+{
+  "name": "pae-pocketqubes-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "apps-vue.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap-material-design": "^4.1.1",
+    "material-dashboard-dark-edition": "^2.1.0"
+  }
+}
