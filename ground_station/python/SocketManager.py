@@ -57,14 +57,18 @@ class SocketManager:
 
     def parse_packet(self, data):
         packet = {}
-        fmt_header = '<iBBB' # The list of nodes must be computed
+        fmt_header = '<iBBBBBB' # The list of nodes must be computed
         fmt_hk = '<IBBBH'#IBHBBBHHBff'#HH'
         header_items = struct.unpack(fmt_header, data[: struct.calcsize(fmt_header)])
         packet["timestamp"] = time.time()
         packet["rssi"] = header_items[0]
         packet["gs_id"] = Configuration.gs_id
-        packet["src"] = header_items[1]
-        packet["dst"] = header_items[2]
+        # FossaSat header
+        packet["callsign"] = header_items[1]
+        packet["functionId"] = header_items[2]
+        packet["frame_len"] = header_items[3]
+        packet["src"] = header_items[4]
+        packet["dst"] = header_items[5]
         nodes = header_items[len(header_items) - 1]
         route = struct.unpack('B' * nodes, data[struct.calcsize(fmt_header) : struct.calcsize(fmt_header) + nodes])
         packet["route"] = route

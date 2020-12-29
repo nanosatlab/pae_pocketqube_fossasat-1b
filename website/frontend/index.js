@@ -6,6 +6,8 @@ function insertRow(packet) {
         </tr>
         <tr>
             <td>` +  packet.rssi + `</td>
+            <td>` +  packet.callsign + `</td>
+            <td>` +  packet.functionId + `</td>
             <td>` +  packet.src + `</td>
             <td>` +  packet.dst + `</td>
             <td>` +  new Date(packet.telemetry.timestamp).toLocaleTimeString("es-ES") + `.` +  new Date(packet.telemetry.timestamp).getMilliseconds() + `</td>
