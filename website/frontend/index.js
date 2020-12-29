@@ -52,7 +52,7 @@ function showNotification(from, align, level, icon, msg){
 
 /* Create websocket */
 function createWebSocket() {
-    let socket = new WebSocket("ws://localhost:8765/sub");
+    let socket = new WebSocket("ws://gs.jarao.org/sub");
     socket.onmessage = function(event) {
           //alert(`[message] Data received from server: ${event.data}`);
           try{

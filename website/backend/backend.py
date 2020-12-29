@@ -93,7 +93,7 @@ def main():
     rx_file = open("./rx_packets", "a")
 
     # Launch websocket server
-    start_server = websockets.serve(handler, 'localhost', 8765)
+    start_server = websockets.serve(handler, '0.0.0.0', 8765)
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
     rx_file.close();
