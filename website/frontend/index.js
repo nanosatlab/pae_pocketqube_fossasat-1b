@@ -50,16 +50,34 @@ function showNotification(from, align, level, icon, msg){
       });
 }
 
+/* Retrieve all the items */
+function getAllItems() {
+    let all_socket = new WebSocket("ws://localhost:8765/all");
+    all_socket.onmessage = function(event) {
+          console.log(event.data);
+          var packet = JSON.parse(event.data);
+          insertRow(packet);
+    };
+    all_socket.onclose = function(event) {
+
+    };
+    all_socket.onerror = function(event) {
+        console.error("Error all_socket")
+    };
+}
+
 /* Create websocket */
 function createWebSocket() {
-    let socket = new WebSocket("ws://gs.jarao.org/sub");
+    let socket = new WebSocket("ws://localhost:8765/sub");
     socket.onmessage = function(event) {
           //alert(`[message] Data received from server: ${event.data}`);
           try{
+              console.log(event.data);
             var packet = JSON.parse(event.data)
             insertRow(packet);
             showNotification('top', 'right', 'success', "check_circle", "New packet received");
           } catch(err) {
+
             showNotification('top', 'right', 'warning', "add_alert", event.data);
           }
     };
@@ -75,32 +93,7 @@ function createWebSocket() {
         }, 5000);
     };
 }
-createWebSocket();
 
-/*
-        <tr>
-            <td>` +  new Date(packet.timestamp).toLocaleString("es-ES") + `.` +  new Date(packet.telemetry.timestamp).getMilliseconds() + ` // ` +  packet.gs_id + `</td>
-            <td>` +  packet.rssi + `</td>
-            <td>` +  packet.src + `</td>
-            <td>` +  packet.dst + `</td>
-            <td>` +  new Date(packet.telemetry.timestamp).toLocaleTimeString("es-ES") + `.` +  new Date(packet.telemetry.timestamp).getMilliseconds() + `</td>
-            <td>` +  packet.telemetry.id + `</td>
-            <td>` +  packet.telemetry.batt_v + `</td>
-            <td>` +  packet.telemetry.batt_ch_i + `</td>
-            <td>` +  packet.telemetry.batt_ch_v + `</td>
-            <td>` +  packet.telemetry.boot_counter + `</td>
-            <td>` +  packet.telemetry.conf_byte + `</td>
-            <td>` +  packet.telemetry.rst_counter + `</td>
-            <td>` +  packet.telemetry.cell_a_v + `</td>
-            <td>` +  packet.telemetry.cell_b_v + `</td>
-            <td>` +  packet.telemetry.cell_c_v + `</td>
-            <td>` +  packet.telemetry.batt_temp + `</td>
-            <td>` +  packet.telemetry.board_temp + `</td>
-            <td>` +  packet.telemetry.mcu_temp + `</td>
-            <td>` +  parseFloat(packet.telemetry.latitude).toFixed(3) + `</td>
-            <td>` +  parseFloat(packet.telemetry.longitude).toFixed(3) + `</td>
-            <td>` +  packet.telemetry.tx_counter + `</td>
-            <td>` +  packet.telemetry.rx_counter + `</td>
-            <td>Route: ` +  packet.route + `</td>
-        </tr>
-*/
+createWebSocket();
+getAllItems();
+

@@ -56,8 +56,11 @@ def send_wrong_pub(signal_received, frame):
 
 def close(signal_received, frame):
     global rx_file
+    global send_file
     if(rx_file != None):
         rx_file.close()
+    if(send_file != None):
+        send_file.close()
 
 async def handler(websocket, path):
     global connections
@@ -74,14 +77,23 @@ async def handler(websocket, path):
         finally:
             print("removing subscriber #", i)
             connections.remove(websocket)
-
     elif(path == "/pub"):
         async for msg in websocket:
             print("<", msg)
             for ws in connections:
                 asyncio.ensure_future(ws.send(msg))
-            rx_file.write("[" + str(time.time()) + "]" + str(msg))
+            rx_file.write("[" + str(time.time()) + "]" + str(msg) + "\n")
             rx_file.flush();
+    elif(path == "/all"):
+        print("Requested /all")
+        send_file = open("./rx_packets", "r")
+        for line in send_file.readlines():
+            data = line.split("]{")
+            if(len(data) > 1):
+                data = "{" + data[1]
+                asyncio.ensure_future(websocket.send(data))
+        send_file.close()
+
 
 def main():
     # Init the variables
@@ -100,5 +112,5 @@ def main():
     exit(0)
 
 if __name__ == "__main__":
-    signal.signal(signal.SIGINT, send_wrong_pub)
+    signal.signal(signal.SIGINT, send_pub)
     main()
