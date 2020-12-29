@@ -10,9 +10,9 @@ def send_pub(signal_received, frame):
         "timestamp": 1608631208,
         "gs_id": "NanoSatLab",
         "rssi": -88.5,
-        "callsign" = 1
-        "functionId" = 2
-        "frame_len" = 125
+        "callsign": 1,
+        "functionId": 2,
+        "frame_len": 125,
         "src": 0,
         "dst": 255,
         "route": [1, 2, 3, 4],
