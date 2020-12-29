@@ -2,7 +2,7 @@ function insertRow(packet) {
     var div = document.getElementById("table-body");
     var row = `
         <tr>
-            <th colspan="21" style="text-align: left;">` + new Date(packet.timestamp).toLocaleString("es-ES") + `.` + new Date(packet.telemetry.timestamp).getMilliseconds() + ` // ` +  packet.gs_id + `</th>
+            <th colspan="21" style="text-align: left;">` + new Date(packet.timestamp * 1000).toLocaleString("es-ES") + `.` + new Date(packet.telemetry.timestamp * 1000).getMilliseconds() + ` // ` +  packet.gs_id + `</th>
         </tr>
         <tr>
             <td>` +  packet.rssi + `</td>
@@ -10,7 +10,7 @@ function insertRow(packet) {
             <td>` +  packet.functionId + `</td>
             <td>` +  packet.src + `</td>
             <td>` +  packet.dst + `</td>
-            <td>` +  new Date(packet.telemetry.timestamp).toLocaleTimeString("es-ES") + `.` +  new Date(packet.telemetry.timestamp).getMilliseconds() + `</td>
+            <td>` +  new Date(packet.telemetry.timestamp * 1000).toLocaleTimeString("es-ES") + `.` +  new Date(packet.telemetry.timestamp * 1000).getMilliseconds() + `</td>
             <td>` +  packet.telemetry.id + `</td>
             <td>` +  packet.telemetry.batt_v + `</td>
             <td>` +  packet.telemetry.batt_ch_i + `</td>
@@ -52,7 +52,7 @@ function showNotification(from, align, level, icon, msg){
 
 /* Retrieve all the items */
 function getAllItems() {
-    let all_socket = new WebSocket("ws://localhost:8765/all");
+    let all_socket = new WebSocket("wss://gs.jarao.org/all");
     all_socket.onmessage = function(event) {
           console.log(event.data);
           var packet = JSON.parse(event.data);
@@ -68,7 +68,7 @@ function getAllItems() {
 
 /* Create websocket */
 function createWebSocket() {
-    let socket = new WebSocket("ws://localhost:8765/sub");
+    let socket = new WebSocket("wss://gs.jarao.org/sub");
     socket.onmessage = function(event) {
           //alert(`[message] Data received from server: ${event.data}`);
           try{
