@@ -52,8 +52,9 @@ All those files are generated per execution, which means that if you stop the gr
 ### Close the ground station thread
 While the ground_station.py script is trying to connect to a backend, it will stay stuck and you will not be able to close it (with a SIGNQUIT). Therefore, you must pause the thread and then manually kill it. Here a picture as example:
 
+![Pause and Kill](/images/pause-and-kill.png)
 
-
+To pause a thread, you have to click Ctrl+Z.
 
 
 
