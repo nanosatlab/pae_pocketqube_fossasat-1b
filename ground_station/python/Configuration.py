@@ -11,7 +11,7 @@ class Configuration:
     recv_timeout = 5 #localhost = 0.01             # Timeout to receive a data from inet socket [seconds]
     max_size_radio = float('inf')   # Maximum input buffer size of the SocketManager
     max_size_inet = float('inf')    # Maximum input buffer size of the SocketManager
-    serial_port = "/dev/ttyUSB1"
+    serial_port = "/dev/ttyUSB0"
     serial_speed = 500000 #115200
     serial_bytesize = serial.EIGHTBITS
     serial_parity = serial.PARITY_NONE

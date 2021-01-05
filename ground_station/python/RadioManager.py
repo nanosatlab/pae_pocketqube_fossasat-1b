@@ -30,11 +30,14 @@ class RadioManager(threading.Thread):
         now = datetime.now()
         self.tx_file = open(Configuration.log_folder + "/" + Configuration.tx_lora_log_file + "_" + now.strftime("%Y_%m_%d_%H_%M_%S"), "w")
         self.rx_file = open(Configuration.log_folder + "/" + Configuration.rx_lora_log_file + "_" + now.strftime("%Y_%m_%d_%H_%M_%S"), "w")
+        self.log = open(Configuration.log_folder + "/log_" + now.strftime("%Y_%m_%d_%H_%M_%S"), "w")
+        self.log.write("This is the log file in which raw information is printed\n")
 
     # private access
     def close_log_files(self):
         self.tx_file.close()
         self.rx_file.close()
+        self.log.close()
 
     # public access
     def reset_log_files(self):
@@ -58,7 +61,8 @@ class RadioManager(threading.Thread):
     def read_radio(self):
         data = self.port.read()
         if(len(data) > 0):
-            print("From Lora size: " + str(len(data)))
+            self.log.write("From Lora size: " + str(len(data)) + "\n")
+            self.log.flush()
             try:
                 msg = data.decode()
                 if(msg[len(msg) - 1] != '\n'):
@@ -68,11 +72,15 @@ class RadioManager(threading.Thread):
                     return data
                 else:
                     # Print log through stdout
+                    self.log.write(str(msg) + "\n")
+                    self.log.flush()
                     sys.stdout.write(msg)
                     data = b''
             except UnicodeDecodeError as e:
                 # If you are not able to decode it, it means
                 # it is a structure (not log). Just forward it
+                self.log.write("at error exception: " + str(msg) + "\n")
+                self.log.flush()
                 pass
         return data
 
@@ -86,20 +94,27 @@ class RadioManager(threading.Thread):
         # Access the main loop
         self.running = True
         while(self.running == True):
-            # Check if something is received in the buffer
-            if(self.input_buffer.available() > 0):
-                data = self.input_buffer.read()
-                print("============ FROM INTERNET ============");
-                print("[" + str(time.time()) + "] Received " + str(len(data)) + " bytes");
-                print(data.hex())
-                self.write_radio(data)
-            # Check if something is received from the radio
-            data = self.read_radio()
-            if(len(data) > 0):
-                print("============ FROM LORA ============")
-                print("[" + str(time.time()) + "] Received " + str(len(data)) + " bytes")
-                print("Packet: " + str(data.hex()))
-                self.output_buffer.write(data)
+            try:
+                # Check if something is received in the buffer
+                if(self.input_buffer.available() > 0):
+                    data = self.input_buffer.read()
+                    self.log.write("============ FROM INTERNET ============\n");
+                    self.log.write("[" + str(time.time()) + "] Received " + str(len(data)) + " bytes\n");
+                    self.log.write("Packet: " + str(data.hex()) + "\n")
+                    self.log.flush()
+                    self.write_radio(data)
+                # Check if something is received from the radio
+                data = self.read_radio()
+                if(len(data) > 0):
+                    self.log.write("============ FROM LORA ============\n")
+                    self.log.write("[" + str(time.time()) + "] Received " + str(len(data)) + " bytes\n")
+                    self.log.write("Packet: " + str(data.hex()) + "\n")
+                    self.log.flush()
+                    self.output_buffer.write(data)
+            except Exception as e:
+                self.log.write("Something went really wrong: " + str(e))
+                self.log.write("keep running")
+                self.log.flush()
             # release the cpu
             time.sleep(0.001)
         self.close_log_files()
