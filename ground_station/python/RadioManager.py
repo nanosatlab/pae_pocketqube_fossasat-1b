@@ -63,26 +63,11 @@ class RadioManager(threading.Thread):
         if(len(data) > 0):
             self.log.write("From Lora size: " + str(len(data)) + "\n")
             self.log.flush()
-            try:
-                msg = data.decode()
-                if(msg[len(msg) - 1] != '\n'):
-                    # Return the received data
-                    self.rx_file.write("[" + str(time.time()) + "]" + data.hex() + "\n")
-                    self.rx_file.flush()
-                    return data
-                else:
-                    # Print log through stdout
-                    self.log.write(str(msg) + "\n")
-                    self.log.flush()
-                    sys.stdout.write(msg)
-                    data = b''
-            except UnicodeDecodeError as e:
-                # If you are not able to decode it, it means
-                # it is a structure (not log). Just forward it
-                self.log.write("at error exception: " + str(msg) + "\n")
-                self.log.flush()
-                pass
-        return data
+            # Return the received data
+            self.rx_file.write("[" + str(time.time()) + "]" + data.hex() + "\n")
+            self.rx_file.flush()
+            return data
+        return b''
 
     # called privately
     def write_radio(self, data):
@@ -94,27 +79,22 @@ class RadioManager(threading.Thread):
         # Access the main loop
         self.running = True
         while(self.running == True):
-            try:
-                # Check if something is received in the buffer
-                if(self.input_buffer.available() > 0):
-                    data = self.input_buffer.read()
-                    self.log.write("============ FROM INTERNET ============\n");
-                    self.log.write("[" + str(time.time()) + "] Received " + str(len(data)) + " bytes\n");
-                    self.log.write("Packet: " + str(data.hex()) + "\n")
-                    self.log.flush()
-                    self.write_radio(data)
-                # Check if something is received from the radio
-                data = self.read_radio()
-                if(len(data) > 0):
-                    self.log.write("============ FROM LORA ============\n")
-                    self.log.write("[" + str(time.time()) + "] Received " + str(len(data)) + " bytes\n")
-                    self.log.write("Packet: " + str(data.hex()) + "\n")
-                    self.log.flush()
-                    self.output_buffer.write(data)
-            except Exception as e:
-                self.log.write("Something went really wrong: " + str(e))
-                self.log.write("keep running")
+            # Check if something is received in the buffer
+            if(self.input_buffer.available() > 0):
+                data = self.input_buffer.read()
+                self.log.write("============ FROM INTERNET ============\n");
+                self.log.write("[" + str(time.time()) + "] Received " + str(len(data)) + " bytes\n");
+                self.log.write("Packet: " + str(data.hex()) + "\n")
                 self.log.flush()
+                self.write_radio(data)
+            # Check if something is received from the radio
+            data = self.read_radio()
+            if(len(data) > 0):
+                self.log.write("============ FROM LORA ============\n")
+                self.log.write("[" + str(time.time()) + "] Received " + str(len(data)) + " bytes\n")
+                self.log.write("Packet: " + str(data.hex()) + "\n")
+                self.log.flush()
+                self.output_buffer.write(data)
             # release the cpu
             time.sleep(0.001)
         self.close_log_files()
